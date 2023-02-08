@@ -1,42 +1,22 @@
 import React, { useState } from "react";
 import ToDoListItem from "./ToDoListItem";
 import Heading from "./Heading";
+import InputArea from "./InputArea";
 
 function App() {
-  const [item, AddNewItem] = useState({ newItem: "", items: ["Hello"] });
+  const [items, addNewItems] = useState([]);
 
-  function handleInput(event) {
-    const eventInput = event.target.value;
-    AddNewItem((preValue) => {
-      return {
-        ...preValue,
-        newItem: eventInput,
-      };
+  function handleSubmit(input) {
+    addNewItems((preValue) => {
+      return [...preValue, input];
     });
-  }
-
-  function handleSubmit() {
-    item.items.push(item.newItem);
-    AddNewItem((preValue) => {
-      return {
-        ...preValue,
-      };
-    });
-
-    item.newItem = "";
   }
 
   function deleteItem(id) {
-    AddNewItem((preValue) => {
-      const newArr = preValue.items.filter((toDeleteItem, index) => {
-        return id !== index;
+    addNewItems((preValue) => {
+      return preValue.filter((toDoitem, index) => {
+        return index !== id;
       });
-      return {
-        newItem: item.newItem,
-        items: newArr,
-      };
-
-      // return preValue;
     });
   }
 
@@ -45,16 +25,12 @@ function App() {
       <div className="heading">
         <Heading />
       </div>
-      <div className="form">
-        <input type="text" onChange={handleInput} value={item.newItem} />
-        <button type="submit" onClick={handleSubmit}>
-          <span>Add</span>
-        </button>
-      </div>
+      <InputArea handleSubmit={handleSubmit} />
+
       <div>
         <ul>
           {/* {console.log(item.items)} */}
-          {item.items.map((newOne, index) => (
+          {items.map((newOne, index) => (
             <ToDoListItem
               item={newOne}
               handleClick={deleteItem}
@@ -69,3 +45,10 @@ function App() {
 }
 
 export default App;
+
+//  <div className="form">
+//         <input type="text" onChange={handleInput} value={item.newItem} />
+//         <button type="submit" onClick={handleSubmit}>
+//           <span>Add</span>
+//         </button>
+//       </div>
