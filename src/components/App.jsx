@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ListItem from "./ListItem";
+import ToDoListItem from "./ToDoListItem";
 import Heading from "./Heading";
 
 function App() {
@@ -26,6 +26,20 @@ function App() {
     item.newItem = "";
   }
 
+  function deleteItem(id) {
+    AddNewItem((preValue) => {
+      const newArr = preValue.items.filter((toDeleteItem, index) => {
+        return id !== index;
+      });
+      return {
+        newItem: item.newItem,
+        items: newArr,
+      };
+
+      // return preValue;
+    });
+  }
+
   return (
     <div className="container">
       <div className="heading">
@@ -40,8 +54,13 @@ function App() {
       <div>
         <ul>
           {/* {console.log(item.items)} */}
-          {item.items.map((newOne) => (
-            <ListItem item={newOne} />
+          {item.items.map((newOne, index) => (
+            <ToDoListItem
+              item={newOne}
+              handleClick={deleteItem}
+              key={index}
+              id={index}
+            />
           ))}
         </ul>
       </div>
